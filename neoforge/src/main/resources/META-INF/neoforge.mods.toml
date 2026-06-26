@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="minecart_speed"
+version="${version}"
+displayName="Minecart Speed"
+authors="Lawson_Hui"
+description='''
+Per-minecart speed control via commands.
+'''
+
+[[dependencies.minecart_speed]]
+modId="neoforge"
+type="required"
+versionRange="[26.2,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.minecart_speed]]
+modId="minecraft"
+type="required"
+versionRange="[26.2,)"
+ordering="NONE"
+side="BOTH"

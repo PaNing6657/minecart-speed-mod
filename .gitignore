@@ -1,0 +1,20 @@
+# Compiled output
+**/build/
+
+# Gradle
+**/.gradle/
+!**/gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+**/.idea/
+**/*.iml
+**/*.ipr
+**/*.iws
+**/out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime
+**/run/

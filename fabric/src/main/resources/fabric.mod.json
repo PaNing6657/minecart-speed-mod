@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "minecart_speed",
+	"version": "${version}",
+	"name": "Minecart Speed",
+	"description": "Per-minecart speed control via custom commands",
+	"authors": [
+		"Lawson_Hui"
+	],
+	"contact": {},
+	"license": "MIT",
+	"environment": "server",
+	"entrypoints": {
+		"main": [
+			"com.minecraftpro.minecartspeed.MinecartSpeedMod"
+		]
+	},
+	"mixins": [
+		"minecart_speed.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

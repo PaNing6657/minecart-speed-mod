@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.minecraftpro.minecartspeed.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"AbstractMinecartMixin"
+	],
+	"injectors": {
+		"defaultRequire": 0
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
