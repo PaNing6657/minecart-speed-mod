@@ -6,6 +6,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
@@ -50,6 +51,11 @@ public class MinecartSpeedCommand {
 		);
 	}
 
+	private static boolean zh(CommandSourceStack source) {
+		ServerPlayer player = source.getPlayer();
+		return player != null && player.clientInformation().language().startsWith("zh");
+	}
+
 	private static int executeSet(CommandSourceStack source, Collection<? extends Entity> targets, float speedBps) {
 		int count = 0;
 		for (Entity entity : targets) {
@@ -60,41 +66,53 @@ public class MinecartSpeedCommand {
 			}
 		}
 
+		boolean zh = zh(source);
 		if (count == 0) {
-			source.sendFailure(Component.translatable("minecart_speed.command.no_minecarts"));
+			source.sendFailure(Component.literal(
+				zh ? "目标选择中未找到矿车" : "No minecarts found in target selection"));
 			return 0;
 		}
 
-		Component msg = count == 1
-			? Component.translatable("minecart_speed.command.set.single", String.format("%.2f", speedBps))
-			: Component.translatable("minecart_speed.command.set.multiple", count, String.format("%.2f", speedBps));
-		source.sendSuccess(() -> msg, true);
+		String msg = count == 1
+			? (zh
+				? String.format("已将矿车速度设置为 %.2f 方块/秒", speedBps)
+				: String.format("Set minecart speed to %.2f blocks/s", speedBps))
+			: (zh
+				? String.format("已将 %d 个矿车的速度设置为 %.2f 方块/秒", count, speedBps)
+				: String.format("Set speed of %d minecarts to %.2f blocks/s", count, speedBps));
+		source.sendSuccess(() -> Component.literal(msg), true);
 		return count;
 	}
 
 	private static int executeGet(CommandSourceStack source, Collection<? extends Entity> targets) {
 		int count = 0;
+		boolean zh = zh(source);
 		for (Entity entity : targets) {
 			if (entity instanceof AbstractMinecart minecart) {
 				MinecartSpeedAccess access = (MinecartSpeedAccess) minecart;
 				Double speed = access.minecart_speed$getCustomSpeed();
-				Component msg;
+				String msg;
 				if (speed != null) {
-					msg = Component.translatable("minecart_speed.command.get.custom",
-						minecart.getStringUUID().substring(0, 8),
-						String.format("%.2f", speed),
-						String.format("%.4f", speed / 20.0));
+					msg = zh
+						? String.format("矿车 [%s] 自定义速度：%.2f 方块/秒（%.4f 方块/tick）",
+							minecart.getStringUUID().substring(0, 8), speed, speed / 20.0)
+						: String.format("Minecart [%s] custom speed: %.2f blocks/s (%.4f blocks/tick)",
+							minecart.getStringUUID().substring(0, 8), speed, speed / 20.0);
 				} else {
-					msg = Component.translatable("minecart_speed.command.get.vanilla",
-						minecart.getStringUUID().substring(0, 8));
+					msg = zh
+						? String.format("矿车 [%s] 使用原版速度（8.00 方块/秒）",
+							minecart.getStringUUID().substring(0, 8))
+						: String.format("Minecart [%s] using vanilla speed (8.00 blocks/s)",
+							minecart.getStringUUID().substring(0, 8));
 				}
-				source.sendSuccess(() -> msg, false);
+				source.sendSuccess(() -> Component.literal(msg), false);
 				count++;
 			}
 		}
 
 		if (count == 0) {
-			source.sendFailure(Component.translatable("minecart_speed.command.no_minecarts"));
+			source.sendFailure(Component.literal(
+				zh ? "目标选择中未找到矿车" : "No minecarts found in target selection"));
 			return 0;
 		}
 		return count;
@@ -110,15 +128,19 @@ public class MinecartSpeedCommand {
 			}
 		}
 
+		boolean zh = zh(source);
 		if (count == 0) {
-			source.sendFailure(Component.translatable("minecart_speed.command.no_minecarts"));
+			source.sendFailure(Component.literal(
+				zh ? "目标选择中未找到矿车" : "No minecarts found in target selection"));
 			return 0;
 		}
 
-		Component msg = count == 1
-			? Component.translatable("minecart_speed.command.remove.single")
-			: Component.translatable("minecart_speed.command.remove.multiple", count);
-		source.sendSuccess(() -> msg, true);
+		String msg = count == 1
+			? (zh ? "已移除自定义速度 — 矿车恢复为原版" : "Removed custom speed — minecart reverted to vanilla")
+			: (zh
+				? String.format("已移除 %d 个矿车的自定义速度 — 恢复为原版", count)
+				: String.format("Removed custom speed from %d minecarts — reverted to vanilla", count));
+		source.sendSuccess(() -> Component.literal(msg), true);
 		return count;
 	}
 }

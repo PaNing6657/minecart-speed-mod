@@ -15,7 +15,6 @@ import java.util.UUID;
 
 public class MinecartSpeedController {
 
-	public static final String CONTROLLER_TRANSLATION_KEY = "minecart_speed.controller.name";
 	public static final String NBT_KEY = "speed_controller";
 	public static final double SPEED_STEP = 2.0;
 	public static final double DEFAULT_SPEED = 8.0;
@@ -30,6 +29,10 @@ public class MinecartSpeedController {
 		return data.copyTag().getBoolean(NBT_KEY).orElse(false);
 	}
 
+	private static boolean zh(ServerPlayer player) {
+		return player.clientInformation().language().startsWith("zh");
+	}
+
 	public static void giveSpeedController(ServerPlayer player) {
 		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
 			if (isSpeedController(player.getInventory().getItem(i))) {
@@ -37,18 +40,23 @@ public class MinecartSpeedController {
 			}
 		}
 
+		boolean zh = zh(player);
 		ItemStack compass = new ItemStack(Items.COMPASS);
-		compass.set(DataComponents.CUSTOM_NAME, Component.translatable(CONTROLLER_TRANSLATION_KEY));
+		compass.set(DataComponents.CUSTOM_NAME, Component.literal(zh ? "速度控制器" : "Speed Controller"));
 		compass.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
 		CompoundTag tag = new CompoundTag();
 		tag.putBoolean(NBT_KEY, true);
 		compass.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
 		if (!player.getInventory().add(compass)) {
-			player.sendSystemMessage(Component.translatable("minecart_speed.controller.inventory_full"), false);
+			player.sendSystemMessage(Component.literal(
+				zh ? "§c背包已满，无法获得速度控制器"
+				   : "§cInventory full, cannot receive Speed Controller"), false);
 			return;
 		}
-		player.sendSystemMessage(Component.translatable("minecart_speed.controller.received"), false);
+		player.sendSystemMessage(Component.literal(
+			zh ? "§a已获得速度控制器！左键加速，右键减速"
+			   : "§aSpeed Controller received! Left-click = accelerate, Right-click = decelerate"), false);
 	}
 
 	public static void removeSpeedController(ServerPlayer player) {
@@ -74,7 +82,11 @@ public class MinecartSpeedController {
 		double newSpeed = Math.min(100.0, Math.max(0.0, current + delta));
 		access.minecart_speed$setCustomSpeed(newSpeed);
 
-		String key = delta > 0 ? "minecart_speed.controller.accelerate" : "minecart_speed.controller.decelerate";
-		player.sendSystemMessage(Component.translatable(key, String.format("%.1f", newSpeed)), false);
+		boolean zh = zh(player);
+		String dir = delta > 0 ? "§a" : "§c";
+		String word = delta > 0 ? (zh ? "加速" : "Accelerate") : (zh ? "减速" : "Decelerate");
+		String unit = zh ? "方块/秒" : "blocks/s";
+		player.sendSystemMessage(Component.literal(
+			dir + word + (zh ? "：当前速度 " : ": current speed ") + "§e" + String.format("%.1f", newSpeed) + " §f" + unit), false);
 	}
 }
