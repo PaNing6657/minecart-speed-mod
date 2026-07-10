@@ -1,0 +1,17 @@
+{
+  "minecart_speed.loaded": "Minecart Speed mod loaded — use /minecartspeed to control per-cart speed",
+
+  "minecart_speed.command.no_minecarts": "No minecarts found in target selection",
+  "minecart_speed.command.set.single": "Set minecart speed to %.2f blocks/s",
+  "minecart_speed.command.set.multiple": "Set speed of %d minecarts to %.2f blocks/s",
+  "minecart_speed.command.get.custom": "Minecart [%s] custom speed: %.2f blocks/s (%.4f blocks/tick)",
+  "minecart_speed.command.get.vanilla": "Minecart [%s] using vanilla speed (8.00 blocks/s)",
+  "minecart_speed.command.remove.single": "Removed custom speed — minecart reverted to vanilla",
+  "minecart_speed.command.remove.multiple": "Removed custom speed from %d minecarts — reverted to vanilla",
+
+  "minecart_speed.controller.name": "Speed Controller",
+  "minecart_speed.controller.inventory_full": "§cInventory full, cannot receive Speed Controller",
+  "minecart_speed.controller.received": "§aSpeed Controller received! Left-click = accelerate, Right-click = decelerate",
+  "minecart_speed.controller.accelerate": "§aAccelerate: current speed §e%.1f §fblocks/s",
+  "minecart_speed.controller.decelerate": "§cDecelerate: current speed §e%.1f §fblocks/s"
+}

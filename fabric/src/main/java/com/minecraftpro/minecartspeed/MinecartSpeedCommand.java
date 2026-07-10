@@ -61,14 +61,14 @@ public class MinecartSpeedCommand {
 		}
 
 		if (count == 0) {
-			source.sendFailure(Component.literal("No minecarts found in target selection"));
+			source.sendFailure(Component.translatable("minecart_speed.command.no_minecarts"));
 			return 0;
 		}
 
-		String msg = count == 1
-			? String.format("Set minecart speed to %.2f blocks/s", speedBps)
-			: String.format("Set speed of %d minecarts to %.2f blocks/s", count, speedBps);
-		source.sendSuccess(() -> Component.literal(msg), true);
+		Component msg = count == 1
+			? Component.translatable("minecart_speed.command.set.single", String.format("%.2f", speedBps))
+			: Component.translatable("minecart_speed.command.set.multiple", count, String.format("%.2f", speedBps));
+		source.sendSuccess(() -> msg, true);
 		return count;
 	}
 
@@ -78,21 +78,23 @@ public class MinecartSpeedCommand {
 			if (entity instanceof AbstractMinecart minecart) {
 				MinecartSpeedAccess access = (MinecartSpeedAccess) minecart;
 				Double speed = access.minecart_speed$getCustomSpeed();
-				String msg;
+				Component msg;
 				if (speed != null) {
-					msg = String.format("Minecart [%s] custom speed: %.2f blocks/s (%.4f blocks/tick)",
-						minecart.getStringUUID().substring(0, 8), speed, speed / 20.0);
+					msg = Component.translatable("minecart_speed.command.get.custom",
+						minecart.getStringUUID().substring(0, 8),
+						String.format("%.2f", speed),
+						String.format("%.4f", speed / 20.0));
 				} else {
-					msg = String.format("Minecart [%s] using vanilla speed (8.00 blocks/s)",
+					msg = Component.translatable("minecart_speed.command.get.vanilla",
 						minecart.getStringUUID().substring(0, 8));
 				}
-				source.sendSuccess(() -> Component.literal(msg), false);
+				source.sendSuccess(() -> msg, false);
 				count++;
 			}
 		}
 
 		if (count == 0) {
-			source.sendFailure(Component.literal("No minecarts found in target selection"));
+			source.sendFailure(Component.translatable("minecart_speed.command.no_minecarts"));
 			return 0;
 		}
 		return count;
@@ -109,14 +111,14 @@ public class MinecartSpeedCommand {
 		}
 
 		if (count == 0) {
-			source.sendFailure(Component.literal("No minecarts found in target selection"));
+			source.sendFailure(Component.translatable("minecart_speed.command.no_minecarts"));
 			return 0;
 		}
 
-		String msg = count == 1
-			? "Removed custom speed — minecart reverted to vanilla"
-			: String.format("Removed custom speed from %d minecarts — reverted to vanilla", count);
-		source.sendSuccess(() -> Component.literal(msg), true);
+		Component msg = count == 1
+			? Component.translatable("minecart_speed.command.remove.single")
+			: Component.translatable("minecart_speed.command.remove.multiple", count);
+		source.sendSuccess(() -> msg, true);
 		return count;
 	}
 }

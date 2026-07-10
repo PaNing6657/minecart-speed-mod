@@ -3,7 +3,11 @@
 	"package": "com.minecraftpro.minecartspeed.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"AbstractMinecartMixin"
+		"AbstractMinecartMixin",
+		"EntityStartRidingMixin",
+		"LivingEntityMixin",
+		"MinecartBehaviorAccessor",
+		"NewMinecartBehaviorMixin"
 	],
 	"injectors": {
 		"defaultRequire": 0
