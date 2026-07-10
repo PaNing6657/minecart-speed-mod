@@ -1,4 +1,4 @@
-package com.minecraftpro.minecartspeed;
+package io.github.stcaomei.minecart_speed_plus;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;

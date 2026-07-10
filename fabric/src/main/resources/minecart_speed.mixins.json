@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "com.minecraftpro.minecartspeed.mixin",
+	"package": "io.github.stcaomei.minecart_speed_plus.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
 		"AbstractMinecartMixin",

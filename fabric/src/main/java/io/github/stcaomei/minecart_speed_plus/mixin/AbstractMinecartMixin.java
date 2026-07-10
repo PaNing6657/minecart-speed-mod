@@ -1,6 +1,6 @@
-package com.minecraftpro.minecartspeed.mixin;
+package io.github.stcaomei.minecart_speed_plus.mixin;
 
-import com.minecraftpro.minecartspeed.MinecartSpeedAccess;
+import io.github.stcaomei.minecart_speed_plus.MinecartSpeedAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

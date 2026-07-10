@@ -1,6 +1,6 @@
-package com.minecraftpro.minecartspeed.mixin;
+package io.github.stcaomei.minecart_speed_plus.mixin;
 
-import com.minecraftpro.minecartspeed.MinecartSpeedController;
+import io.github.stcaomei.minecart_speed_plus.MinecartSpeedController;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;

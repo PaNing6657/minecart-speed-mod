@@ -1,18 +1,20 @@
 {
 	"schemaVersion": 1,
-	"id": "minecart_speed",
+	"id": "minecart_speed_plus",
 	"version": "${version}",
-	"name": "Minecart Speed",
-	"description": "Per-minecart speed control via custom commands",
+	"name": "Minecart Speed Plus",
+	"description": "Enhanced minecart speed control — speed controller item, auto speed adjustment, and more",
 	"authors": [
-		"Lawson_Hui"
+		"STCaoMei",
+		"DeepSeek",
+		"MomoLawson"
 	],
 	"contact": {},
 	"license": "MIT",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.minecraftpro.minecartspeed.MinecartSpeedMod"
+			"io.github.stcaomei.minecart_speed_plus.MinecartSpeedMod"
 		]
 	},
 	"mixins": [

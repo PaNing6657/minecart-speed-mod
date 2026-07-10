@@ -1,4 +1,4 @@
-package com.minecraftpro.minecartspeed;
+package io.github.stcaomei.minecart_speed_plus;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;

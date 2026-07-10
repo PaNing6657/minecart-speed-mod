@@ -1,6 +1,6 @@
-package com.minecraftpro.minecartspeed.mixin;
+package io.github.stcaomei.minecart_speed_plus.mixin;
 
-import com.minecraftpro.minecartspeed.MinecartSpeedAccess;
+import io.github.stcaomei.minecart_speed_plus.MinecartSpeedAccess;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.minecart.NewMinecartBehavior;
 import org.spongepowered.asm.mixin.Mixin;

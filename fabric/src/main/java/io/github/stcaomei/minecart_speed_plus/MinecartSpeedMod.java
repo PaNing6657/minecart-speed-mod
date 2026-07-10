@@ -1,4 +1,4 @@
-package com.minecraftpro.minecartspeed;
+package io.github.stcaomei.minecart_speed_plus;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MinecartSpeedMod implements ModInitializer {
-	public static final String MOD_ID = "minecart_speed";
+	public static final String MOD_ID = "minecart_speed_plus";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
@@ -31,6 +31,6 @@ public class MinecartSpeedMod implements ModInitializer {
 			return InteractionResult.SUCCESS;
 		});
 
-		LOGGER.info("Minecart Speed mod loaded — use /minecartspeed to control per-cart speed");
+		LOGGER.info("Minecart Speed Plus mod loaded — use /minecartspeed to control per-cart speed");
 	}
 }
