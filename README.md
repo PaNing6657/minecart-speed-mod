@@ -1,13 +1,13 @@
-# Minecart Speed (Modified)
+# Minecart Speed Plus
 
-> [中文版](#矿车速度修改版) | Based on a fork of [MomoLawson/minecart-speed-mod](https://github.com/MomoLawson/minecart-speed-mod)
+> [中文版](#矿车速度-plus) | Based on a fork of [MomoLawson/minecart-speed-mod](https://github.com/MomoLawson/minecart-speed-mod)
 
 ---
 
 ### Differences from the Original
 
-| Feature | Original | Modified |
-|---------|----------|----------|
+| Feature | Original | Plus |
+|---------|----------|------|
 | Speed command | ✓ | ✓ |
 | Speed controller item | ✗ | ✓ |
 | Left-click speed up / Right-click slow down | ✗ | ✓ |
@@ -100,15 +100,15 @@ MIT
 
 ---
 
-## 矿车速度（修改版）
+## 矿车速度 Plus
 
-> [English Version](#minecart-speed-modified) | 基于 [MomoLawson/minecart-speed-mod](https://github.com/MomoLawson/minecart-speed-mod) 二次修改。
+> [English Version](#minecart-speed-plus) | 基于 [MomoLawson/minecart-speed-mod](https://github.com/MomoLawson/minecart-speed-mod) 二次修改。
 
 ---
 
 ### 与原版的区别
 
-| 功能 | 原版 | 修改版 |
+| 功能 | 原版 | Plus |
 |------|------|--------|
 | 指令调速 | ✓ | ✓ |
 | 速度控制器 | ✗ | ✓ |
