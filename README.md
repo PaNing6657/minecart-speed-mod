@@ -1,7 +1,107 @@
-# Minecart Speed (Modified) / 矿车速度（修改版）
+# Minecart Speed (Modified)
 
+> [中文版](#矿车速度修改版) | Based on a fork of [MomoLawson/minecart-speed-mod](https://github.com/MomoLawson/minecart-speed-mod)
 
-基于 [MomoLawson/minecart-speed-mod](https://github.com/MomoLawson/minecart-speed-mod) 二次修改。Based on a fork of the original mod.
+---
+
+### Differences from the Original
+
+| Feature | Original | Modified |
+|---------|----------|----------|
+| Speed command | ✓ | ✓ |
+| Speed controller item | ✗ | ✓ |
+| Left-click speed up / Right-click slow down | ✗ | ✓ |
+| Auto slow down on curves & restore | ✗ | ✓ |
+| Auto slow down on slopes & restore | ✗ | ✓ |
+| Auto slow down on block ahead & restore | ✗ | ✓ |
+| Speed limit (0 ~ 100 blocks/sec) | No limit | ✓ |
+| Supported platforms | Fabric / Forge / NeoForge | **Fabric only** |
+
+### Feature Details
+
+#### 1. Speed Commands (Original)
+
+```
+/minecartspeed set <targets> <speed>    Set speed (blocks/sec, 0~100)
+/minecartspeed get <targets>            Query speed
+/minecartspeed remove <targets>         Restore default speed (8 blocks/sec)
+```
+
+Requires OP level 2. Supports entity selectors like `@e[type=minecraft:minecart]`.
+
+#### 2. Speed Controller (New)
+
+- **Auto-grant on mount**: When a player sits in a minecart, a compass item named "Speed Controller" is automatically added to their inventory.
+- **Left-click to speed up**: Left-click while holding the controller → minecart speed +2 blocks/sec.
+- **Right-click to slow down**: Right-click while holding the controller → minecart speed -2 blocks/sec.
+- **Auto-remove on dismount**: The controller is removed from inventory when leaving the minecart.
+- Speed range: 0 ~ 100 blocks/sec, cooldown: 0.5 seconds.
+
+#### 3. Automatic Speed Adjustment (New)
+
+When a minecart encounters the following situations (within 5 blocks ahead), it **automatically switches to default speed** (8 blocks/sec) and **restores** after passing:
+
+| Detection | Description |
+|-----------|-------------|
+| Curve | Turning rail ahead |
+| Slope | Ascending rail ahead |
+| Block obstruction | Non-rail solid block ahead |
+
+> Stationary minecarts do not trigger detection. Manual speed adjustment (command/controller) clears the auto state.
+
+### Installation
+
+1. Download `minecart_speed-fabric-1.0.0.jar`
+2. Place it in the server's `mods/` folder
+3. **Server-side only**, no client installation required
+
+**Requirements:** Minecraft 26.2, Fabric Loader >= 0.19.3, Fabric API
+
+### Command Reference
+
+```mcfunction
+# Set the nearest minecart speed to 20 blocks/sec
+/minecartspeed set @e[type=minecraft:minecart,limit=1,sort=nearest] 20
+
+# Query all minecarts' speed
+/minecartspeed get @e[type=minecraft:minecart]
+
+# Restore default speed
+/minecartspeed remove @e[type=minecraft:minecart,limit=1,sort=nearest]
+```
+
+### Speed Reference
+
+| Blocks/sec | Description |
+|-----------|-------------|
+| 8.0 | Vanilla default |
+| 16.0 | 2x speed |
+| 32.0 | 4x speed |
+| 64.0 | 8x speed |
+| 100.0 | Maximum speed |
+
+### Building
+
+```bash
+cd fabric
+./gradlew build
+```
+
+The compiled jar will be in `build/libs/`.
+
+### Credits
+
+- Original author: [MomoLawson](https://github.com/MomoLawson) — base framework and command system
+
+### License
+
+MIT
+
+---
+
+## 矿车速度（修改版）
+
+> [English Version](#minecart-speed-modified) | 基于 [MomoLawson/minecart-speed-mod](https://github.com/MomoLawson/minecart-speed-mod) 二次修改。
 
 ---
 
