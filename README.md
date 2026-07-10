@@ -36,6 +36,7 @@ Requires OP level 2. Supports entity selectors like `@e[type=minecraft:minecart]
 - **Right-click to slow down**: Right-click while holding the controller → minecart speed -2 blocks/sec.
 - **Auto-remove on dismount**: The controller is removed from inventory when leaving the minecart.
 - Speed range: 0 ~ 100 blocks/sec, cooldown: 0.5 seconds.
+- **Regular minecart only**: The controller only works on regular minecarts, not on chest minecarts, hopper minecarts, etc.
 
 #### 3. Automatic Speed Adjustment (New)
 
@@ -137,6 +138,7 @@ MIT
 - **右键减速**：手持控制器右键挥手 → 矿车速度 -2 方块/秒
 - **下车自动移除**：离开矿车时控制器自动从背包消失
 - 速度范围：0 ~ 100 方块/秒，冷却 0.5 秒
+- **仅普通矿车生效**：控制器仅在普通矿车上生效，运输矿车、漏斗矿车等不生效
 
 #### 3. 自动变速（新增）
 
