@@ -1,8 +1,6 @@
 package io.github.stcaomei.minecart_speed_plus;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,9 +9,6 @@ import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +19,7 @@ public class MinecartSpeedController {
 	public static final String NBT_KEY = "speed_controller";
 	public static final double SPEED_STEP = 2.0;
 	public static final double DEFAULT_SPEED = 8.0;
+	public static final double MAX_SPEED = 30.0;
 	public static final int COOLDOWN_TICKS = 10;
 
 	public static boolean allowNonOp = true;
@@ -59,10 +55,6 @@ public class MinecartSpeedController {
 		ItemStack compass = new ItemStack(Items.COMPASS);
 		compass.set(DataComponents.CUSTOM_NAME, Component.literal(zh ? "速度控制器" : "Speed Controller").withStyle(style -> style.withItalic(false)));
 		compass.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
-		HolderLookup.RegistryLookup<Enchantment> lookup = player.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-		ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-		mutable.set(lookup.getOrThrow(Enchantments.BINDING_CURSE), 1);
-		compass.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
 		CompoundTag tag = new CompoundTag();
 		tag.putBoolean(NBT_KEY, true);
 		compass.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
@@ -98,7 +90,7 @@ public class MinecartSpeedController {
 		MinecartSpeedAccess access = (MinecartSpeedAccess) minecart;
 		Double currentSpeed = access.minecart_speed$getCustomSpeed();
 		double current = (currentSpeed != null) ? currentSpeed : DEFAULT_SPEED;
-		double newSpeed = Math.min(100.0, Math.max(0.0, current + delta));
+		double newSpeed = Math.min(MAX_SPEED, Math.max(0.0, current + delta));
 		access.minecart_speed$setCustomSpeed(newSpeed);
 		MinecartSpeedMod.LOGGER.info("{} adjusted minecart#{} speed: {} -> {} bps", player.getScoreboardName(), minecart.getId(), current, newSpeed);
 

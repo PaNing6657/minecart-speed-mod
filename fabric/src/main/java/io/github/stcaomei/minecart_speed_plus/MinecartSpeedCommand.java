@@ -73,6 +73,13 @@ public class MinecartSpeedCommand {
 	}
 
 	private static int executeSet(CommandSourceStack source, Collection<? extends Entity> targets, float speedBps) {
+		if (speedBps < 0.0f || speedBps > (float) MinecartSpeedController.MAX_SPEED) {
+			boolean zh = zh(source);
+			source.sendFailure(Component.literal(
+				zh ? "速度必须在 0 ~ " + MinecartSpeedController.MAX_SPEED + " 方块/秒之间"
+				   : "Speed must be between 0 ~ " + MinecartSpeedController.MAX_SPEED + " blocks/s"));
+			return 0;
+		}
 		int count = 0;
 		for (Entity entity : targets) {
 			if (entity instanceof AbstractMinecart minecart) {

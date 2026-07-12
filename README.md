@@ -15,8 +15,7 @@
 | Auto slow down on slopes & restore | ✗ | ✓ (only when speed > 8) |
 | Detection toggle command | ✗ | ✓ |
 | Non-OP access control | ✗ | ✓ |
-| Curse of Binding on controller | ✗ | ✓ |
-| Speed limit (0 ~ 100 blocks/sec) | No limit | ✓ |
+| Speed limit (0 ~ 30 blocks/sec) | No limit | ✓ |
 | Supported platforms | Fabric / Forge / NeoForge | **Fabric only** |
 
 ### Feature Details
@@ -24,7 +23,7 @@
 #### 1. Speed Commands
 
 ```
-/minecartspeed set <targets> <speed>    Set speed (blocks/sec, 0~100)
+/minecartspeed set <targets> <speed>    Set speed (blocks/sec, 0~30)
 /minecartspeed get <targets>            Query speed
 /minecartspeed remove <targets>         Restore default speed (8 blocks/sec)
 /minecartspeed autoslowdown on|off    Toggle auto-slowdown on curves/slopes (default: on)
@@ -38,8 +37,7 @@ Requires OP level 2. Supports entity selectors like `@e[type=minecraft:minecart]
 - **Left-click to speed up**: Left-click while holding the controller → minecart speed +2 blocks/sec.
 - **Right-click to slow down**: Right-click while holding the controller → minecart speed -2 blocks/sec.
 - **Auto-remove on dismount**: The controller is removed from inventory when leaving the minecart.
-- Speed range: 0 ~ 100 blocks/sec, cooldown: 0.5 seconds.
-- **Curse of Binding**: The controller has Curse of Binding enchantment, preventing accidental disposal.
+- Speed range: 0 ~ 30 blocks/sec, cooldown: 0.5 seconds.
 - **Regular minecart only**: The controller only works on regular minecarts, not on chest minecarts, hopper minecarts, etc.
 
 #### 3. Automatic Speed Adjustment (New)
@@ -95,9 +93,10 @@ When **disabled**, non-OP players:
 |-----------|-------------|
 | 8.0 | Vanilla default |
 | 16.0 | 2x speed |
-| 32.0 | 4x speed |
-| 64.0 | 8x speed |
-| 100.0 | Maximum speed |
+| 24.0 | 3x speed |
+| 30.0 | Maximum speed |
+
+> Due to vanilla minecart physics, speeds above 30 blocks/sec have no practical effect.
 
 ### Building
 
@@ -135,8 +134,7 @@ MIT
 | 上坡自动降速并恢复 | ✗ | ✓ |
 | 检测开关指令 | ✗ | ✓ |
 | 普通玩家访问控制 | ✗ | ✓ |
-| 绑定诅咒附魔 | ✗ | ✓ |
-| 速度上限（0 ~ 100 方块/秒） | 无上限 | ✓ |
+| 速度上限（0 ~ 30 方块/秒） | 无上限 | ✓ |
 | 支持平台 | Fabric / Forge / NeoForge | **仅 Fabric** |
 
 ### 功能详解
@@ -144,7 +142,7 @@ MIT
 #### 1. 指令调速
 
 ```
-/minecartspeed set <targets> <speed>    设置速度（方块/秒，0~100）
+/minecartspeed set <targets> <speed>    设置速度（方块/秒，0~30）
 /minecartspeed get <targets>            查询速度
 /minecartspeed remove <targets>         恢复原版速度（8 方块/秒）
 /minecartspeed autoslowdown on|off     开关自动降速（默认开启）
@@ -158,8 +156,7 @@ MIT
 - **左键加速**：手持控制器左键挥手 → 矿车速度 +2 方块/秒
 - **右键减速**：手持控制器右键挥手 → 矿车速度 -2 方块/秒
 - **下车自动移除**：离开矿车时控制器自动从背包消失
-- 速度范围：0 ~ 100 方块/秒，冷却 0.5 秒
-- **绑定诅咒**：控制器附有绑定诅咒附魔，防止意外丢弃
+- 速度范围：0 ~ 30 方块/秒，冷却 0.5 秒
 - **仅普通矿车生效**：控制器仅在普通矿车上生效，运输矿车、漏斗矿车等不生效
 
 #### 3. 自动变速（新增）
@@ -215,9 +212,10 @@ MIT
 |---------|------|
 | 8.0 | 原版默认 |
 | 16.0 | 2 倍速 |
-| 32.0 | 4 倍速 |
-| 64.0 | 8 倍速 |
-| 100.0 | 最大速度 |
+| 24.0 | 3 倍速 |
+| 30.0 | 最大速度 |
+
+> 受原版矿车物理限制，超过 30 方块/秒的速度实际没有额外效果。
 
 ### 构建
 
