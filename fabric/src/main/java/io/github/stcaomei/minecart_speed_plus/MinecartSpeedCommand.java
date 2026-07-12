@@ -40,14 +40,30 @@ public class MinecartSpeedCommand {
 						))
 					)
 				)
-				.then(Commands.literal("remove")
-					.then(Commands.argument(ARG_TARGETS, EntityArgument.entities())
-						.executes(ctx -> executeRemove(
-							ctx.getSource(),
-							EntityArgument.getEntities(ctx, ARG_TARGETS)
-						))
-					)
+			.then(Commands.literal("remove")
+				.then(Commands.argument(ARG_TARGETS, EntityArgument.entities())
+					.executes(ctx -> executeRemove(
+						ctx.getSource(),
+						EntityArgument.getEntities(ctx, ARG_TARGETS)
+					))
 				)
+			)
+		.then(Commands.literal("autoslowdown")
+			.then(Commands.literal("on")
+				.executes(ctx -> executeAutoSlowdown(ctx.getSource(), true))
+			)
+			.then(Commands.literal("off")
+				.executes(ctx -> executeAutoSlowdown(ctx.getSource(), false))
+			)
+		)
+			.then(Commands.literal("allowNonOp")
+				.then(Commands.literal("on")
+					.executes(ctx -> executeAllowNonOp(ctx.getSource(), true))
+				)
+				.then(Commands.literal("off")
+					.executes(ctx -> executeAllowNonOp(ctx.getSource(), false))
+				)
+			)
 		);
 	}
 
@@ -72,6 +88,8 @@ public class MinecartSpeedCommand {
 				zh ? "目标选择中未找到矿车" : "No minecarts found in target selection"));
 			return 0;
 		}
+
+		MinecartSpeedMod.LOGGER.info("{} set speed of {} minecart(s) to {} bps", source.getTextName(), count, speedBps);
 
 		String msg = count == 1
 			? (zh
@@ -135,6 +153,8 @@ public class MinecartSpeedCommand {
 			return 0;
 		}
 
+		MinecartSpeedMod.LOGGER.info("{} removed custom speed from {} minecart(s)", source.getTextName(), count);
+
 		String msg = count == 1
 			? (zh ? "已移除自定义速度 — 矿车恢复为原版" : "Removed custom speed — minecart reverted to vanilla")
 			: (zh
@@ -142,5 +162,26 @@ public class MinecartSpeedCommand {
 				: String.format("Removed custom speed from %d minecarts — reverted to vanilla", count));
 		source.sendSuccess(() -> Component.literal(msg), true);
 		return count;
+	}
+
+	private static int executeAutoSlowdown(CommandSourceStack source, boolean enabled) {
+		MinecartSpeedController.autoSlowdownEnabled = enabled;
+		MinecartSpeedMod.LOGGER.info("{} toggled auto-slowdown: {}", source.getTextName(), enabled ? "ON" : "OFF");
+		boolean zh = zh(source);
+		String msg = enabled
+			? (zh ? "自动降速已开启" : "Auto-slowdown enabled")
+			: (zh ? "自动降速已关闭" : "Auto-slowdown disabled");
+		source.sendSuccess(() -> Component.literal(msg), true);
+		return 1;
+	}
+
+	private static int executeAllowNonOp(CommandSourceStack source, boolean enabled) {
+		MinecartSpeedController.allowNonOp = enabled;
+		boolean zh = zh(source);
+		String msg = enabled
+			? (zh ? "非OP玩家现已允许获得并使用速度控制器" : "Non-OP players are now allowed to obtain and use the Speed Controller")
+			: (zh ? "非OP玩家现已禁止获得并使用速度控制器" : "Non-OP players are now forbidden from obtaining and using the Speed Controller");
+		source.sendSuccess(() -> Component.literal(msg), true);
+		return 1;
 	}
 }

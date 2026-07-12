@@ -26,6 +26,7 @@ public class MinecartSpeedMod implements ModInitializer {
 			if (!MinecartSpeedController.isSpeedController(stack)) return InteractionResult.PASS;
 			if (!(player.getVehicle() instanceof AbstractMinecart minecart)) return InteractionResult.PASS;
 			if (player instanceof ServerPlayer serverPlayer) {
+				if (!MinecartSpeedController.canUseController(serverPlayer)) return InteractionResult.PASS;
 				MinecartSpeedController.adjustSpeed(minecart, -MinecartSpeedController.SPEED_STEP, serverPlayer);
 			}
 			return InteractionResult.SUCCESS;

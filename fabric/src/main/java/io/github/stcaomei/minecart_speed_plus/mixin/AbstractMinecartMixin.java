@@ -1,6 +1,8 @@
 package io.github.stcaomei.minecart_speed_plus.mixin;
 
 import io.github.stcaomei.minecart_speed_plus.MinecartSpeedAccess;
+import io.github.stcaomei.minecart_speed_plus.MinecartSpeedController;
+import io.github.stcaomei.minecart_speed_plus.MinecartSpeedMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +26,7 @@ public abstract class AbstractMinecartMixin implements MinecartSpeedAccess {
 	@Unique
 	private static final String SPEED_NBT_KEY = "MinecartSpeedModSpeed";
 	@Unique
-	private static final int LOOK_AHEAD = 5;
+	private static final int LOOK_AHEAD = 3;
 	@Unique
 	private static final double VANILLA_MAX_SPEED = 8.0;
 
@@ -55,13 +57,21 @@ public abstract class AbstractMinecartMixin implements MinecartSpeedAccess {
 		this.minecart_speed$savedSpeedBps = null;
 	}
 
+	@Unique
+	private String minecart_speed$logId() {
+		AbstractMinecart self = (AbstractMinecart) (Object) this;
+		BlockPos pos = self.blockPosition();
+		String id = Integer.toHexString(self.getId());
+		return String.format("minecart#%s at (%d,%d,%d)", id, pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	// 每 tick 计算最大速度时注入：检测障碍物 → 自动降速 / 自动恢复
 	@Inject(method = "getMaxSpeed", at = @At("HEAD"), cancellable = true)
 	private void minecart_speed$overrideMaxSpeed(ServerLevel level, CallbackInfoReturnable<Double> cir) {
 		// 有自定义速度且未自动移除 → 检测是否需要自动减速
 		if (minecart_speed$customSpeedBps != null && !minecart_speed$autoRemoved) {
-			if (minecart_speed$isObstacleAhead(level)) {
-				// 前方有弯道/上坡/方块 → 保存速度，切换为原版速度
+			if (minecart_speed$customSpeedBps > VANILLA_MAX_SPEED && minecart_speed$isObstacleAhead(level)) {
+				MinecartSpeedMod.LOGGER.info("[{}] Auto-slowdown: {} bps -> vanilla, obstacle ahead", minecart_speed$logId(), minecart_speed$customSpeedBps);
 				minecart_speed$savedSpeedBps = minecart_speed$customSpeedBps;
 				minecart_speed$autoRemoved = true;
 				return;
@@ -70,6 +80,7 @@ public abstract class AbstractMinecartMixin implements MinecartSpeedAccess {
 		} else if (minecart_speed$autoRemoved) {
 			// 之前自动减速了，检查障碍物是否已通过
 			if (!minecart_speed$isObstacleAhead(level)) {
+				MinecartSpeedMod.LOGGER.info("[{}] Auto-recovery: restoring speed to {} bps", minecart_speed$logId(), minecart_speed$savedSpeedBps);
 				// 障碍物已通过 → 恢复自定义速度
 				minecart_speed$customSpeedBps = minecart_speed$savedSpeedBps;
 				minecart_speed$savedSpeedBps = null;
@@ -82,6 +93,7 @@ public abstract class AbstractMinecartMixin implements MinecartSpeedAccess {
 	// 检测前方是否有需要减速的障碍物
 	@Unique
 	private boolean minecart_speed$isObstacleAhead(ServerLevel level) {
+		if (!MinecartSpeedController.autoSlowdownEnabled) return false;
 		AbstractMinecart self = (AbstractMinecart) (Object) this;
 		BlockPos currentPos = self.blockPosition();
 		BlockState currentState = level.getBlockState(currentPos);
@@ -106,16 +118,13 @@ public abstract class AbstractMinecartMixin implements MinecartSpeedAccess {
 			dir = motion.z > 0 ? Direction.SOUTH : Direction.NORTH;
 		}
 
-		// 向前扫描 5 格，检测弯道/上坡/实体方块
+		// 向前扫描 3 格，检测弯道/上坡
 		BlockPos.MutableBlockPos checkPos = currentPos.mutable();
 		for (int i = 0; i < LOOK_AHEAD; i++) {
 			checkPos.move(dir);
 			BlockState state = level.getBlockState(checkPos);
 			if (minecart_speed$isCurveOrSlope(state)) {
 				return true; // 前方有弯道或上坡
-			}
-			if (!state.isAir() && !(state.getBlock() instanceof BaseRailBlock)) {
-				return true; // 前方有非铁轨的实体方块阻挡
 			}
 		}
 

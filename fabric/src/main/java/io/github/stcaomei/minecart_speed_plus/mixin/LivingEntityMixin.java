@@ -25,6 +25,7 @@ public abstract class LivingEntityMixin {
 		if (!((Object) this instanceof ServerPlayer player)) return;
 		ItemStack held = player.getItemInHand(hand);
 		if (!MinecartSpeedController.isSpeedController(held)) return;
+		if (!MinecartSpeedController.canUseController(player)) return;
 		if (!(player.getVehicle() instanceof AbstractMinecart minecart)) return;
 		MinecartSpeedController.adjustSpeed(minecart, MinecartSpeedController.SPEED_STEP, player);
 	}
